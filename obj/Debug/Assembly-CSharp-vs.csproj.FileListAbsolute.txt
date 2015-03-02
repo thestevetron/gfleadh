@@ -1,0 +1,11 @@
+C:\Users\Stephen\Documents\GamesFleadhTest\Temp\bin\Debug\Assembly-CSharp.dll
+C:\Users\Stephen\Documents\GamesFleadhTest\Temp\bin\Debug\Assembly-CSharp.pdb
+C:\Users\Stephen\Documents\GamesFleadhTest\Temp\bin\Debug\UnityEditor.dll
+C:\Users\Stephen\Documents\GamesFleadhTest\Temp\bin\Debug\UnityEngine.dll
+C:\Users\Stephen\Documents\GamesFleadhTest\Temp\bin\Debug\Mono.Cecil.dll
+C:\Users\Stephen\Documents\GamesFleadhTest\Temp\bin\Debug\nunit.framework.dll
+C:\Users\Stephen\Documents\GamesFleadhTest\Temp\bin\Debug\Unity.DataContract.dll
+C:\Users\Stephen\Documents\GamesFleadhTest\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+C:\Users\Stephen\Documents\GamesFleadhTest\obj\Debug\Assembly-CSharp-vs.csprojResolveAssemblyReference.cache
+C:\Users\Stephen\Documents\GamesFleadhTest\obj\Debug\Assembly-CSharp.dll
+C:\Users\Stephen\Documents\GamesFleadhTest\obj\Debug\Assembly-CSharp.pdb
