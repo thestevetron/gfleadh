@@ -7,69 +7,73 @@ public class PlayerCameraMovement : MonoBehaviour
     public static int _playerScore = 0;
     public GUIText _scoreText;
     public static int _playerFacing;
-    bool _rotateCamera;
     int centrePos;
+    public float turnTime;
     DestroyGround dest;
+
+
 	void Start ()
     {
         _playerFacing = 1;
         centrePos = 1;
-        _rotateCamera = false;
 	}
 	
 	void Update () 
     {
-        Debug.Log("Position" + centrePos);
+        Debug.Log("Rotation " + _Camera.transform.rotation);
         Movement();
-        //transform.Rotate(3,0,0);
-        //_playerScore = 1 + (int)Time.time;
         _playerScore = (int)transform.position.z;
         _scoreText.text = "FPS : " + 1.0f / Time.deltaTime;
         _directionSetter.transform.position = transform.position;
         CameraSettings();
         _controller = GameObject.FindGameObjectWithTag("Controller");
-        if(_rotateCamera)
-        {
-            RotateCamera();
-        }
 	}
 
-    void RotateCamera()
+    IEnumerator RotateCamera()
     {
-        if (_playerFacing == 1)
+        if (_playerFacing == 0)
         {
-
-            _Camera.transform.localRotation = Quaternion.Slerp(_Camera.transform.rotation, Quaternion.Euler(0, -90, 0), 5f);
+            while (_Camera.transform.rotation != Quaternion.Euler(0, -90, 0))
+            {
+                _Camera.transform.rotation = Quaternion.Slerp(_Camera.transform.rotation, Quaternion.Euler(0, -90, 0), .25f);
+                yield return new WaitForSeconds(0.02f);
+            }
         }
-        else if (_playerFacing == 0)
+        else if (_playerFacing == 1)
         {
-
-            _Camera.transform.localRotation = Quaternion.Slerp(_Camera.transform.rotation, Quaternion.Euler(0, 0, 0), 5f);
+            while (_Camera.transform.rotation != Quaternion.Euler(0, 0, 0))
+            {
+                _Camera.transform.rotation = Quaternion.Slerp(_Camera.transform.rotation, Quaternion.Euler(0, 00, 0), .25f);
+                yield return new WaitForSeconds(0.02f);
+            }
         }
+        CameraSettings();
     }
     void CameraSettings()
     {
-        if(_playerFacing == 0)
+
+        if (_playerFacing == 0)
         {
             //_Camera.transform.localRotation = Quaternion.Euler(new Vector3(0, -90, 0));
             //_Camera.transform.rotation = Quaternion.Slerp(_Camera.transform.rotation, Quaternion.Euler(0, -90, 0), 1000);
             _Camera.transform.position = new Vector3(transform.position.x + 8, 4, transform.position.z);
         }
-        else if(_playerFacing == 1)
+        else if (_playerFacing == 1)
         {
             //_Camera.transform.rotation = Quaternion.Slerp(_Camera.transform.rotation, Quaternion.Euler(0, 0, 0), 1000);
             //_Camera.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
             _Camera.transform.position = new Vector3(transform.position.x, 4, transform.position.z - 8);
         }
-
     }
 
     void Movement()
     {
-
-        //transform.rigidbody.AddForce(new Vector3(0, 0, 7));
-        transform.rigidbody.AddForce(_directionSetter.transform.forward * 7, ForceMode.Acceleration);
-        //transform.position += new Vector3(0, 0, .5f);
+        transform.rigidbody.AddForce(_directionSetter.transform.forward * 8, ForceMode.Acceleration);
+        ///Jump
+        //if(Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    transform.position += new Vector3(0, 2, 0);
+        //}
         if (_playerFacing == 1)
         {
             if (centrePos == 2)
@@ -149,24 +153,28 @@ public class PlayerCameraMovement : MonoBehaviour
             if (_playerFacing == 1)
             {
                 _playerFacing = 0;
-                _rotateCamera = true;
+                ///Camera Rotation
+                CameraSettings();
+                StartCoroutine("RotateCamera");
                 Quaternion target = Quaternion.Euler(0, -90, 0);
-                //transform.rotation = Quaternion.Slerp(transform.rotation, target, 1000);
                 transform.localRotation = target;
                 centrePos = 1;
                 transform.rigidbody.freezeRotation = true;
                 rigidbody.velocity = new Vector3(-rigidbody.velocity.z, 0, 0);
                 _directionSetter.transform.localRotation = target;
                 _controller.GetComponent<GroundGeneration>().CreateGroundStraight();
+
                 Destroy(col.gameObject);
                 Debug.Log("CORNER" + _playerFacing);
             }
             else if (_playerFacing == 0)
             {
+
                 _playerFacing = 1;
-                _rotateCamera = true;
+                ///Camera Rotation
+                CameraSettings();
+                StartCoroutine("RotateCamera");
                 Quaternion target = Quaternion.Euler(0, 0, 0);
-                //transform.rotation = Quaternion.Slerp(transform.rotation, target, 1000);
                 transform.rigidbody.freezeRotation = true;
                 transform.localRotation = target;
                 centrePos = 1;
@@ -186,7 +194,7 @@ public class PlayerCameraMovement : MonoBehaviour
 
     void OnTriggerExit(Collider col)
     {
-        _rotateCamera = false;
+
     }
 
     void OnCollisionEnter(Collision col)
